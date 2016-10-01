@@ -26,8 +26,7 @@ class TestDiasporaEntityMappersReceive(object):
         entities = message_to_objects(DIASPORA_POST_SIMPLE)
         assert len(entities) == 1
         post = entities[0]
-        assert isinstance(post, DiasporaPost)
-        assert isinstance(post, Post)
+        assert type(post) == Post
         assert post.raw_content == "((status message))"
         assert post.guid == "((guidguidguidguidguidguidguid))"
         assert post.handle == "alice@alice.diaspora.example.org"
@@ -39,8 +38,7 @@ class TestDiasporaEntityMappersReceive(object):
         entities = message_to_objects(DIASPORA_POST_COMMENT)
         assert len(entities) == 1
         comment = entities[0]
-        assert isinstance(comment, DiasporaComment)
-        assert isinstance(comment, Comment)
+        assert type(comment) == Comment
         assert comment.target_guid == "((parent_guidparent_guidparent_guidparent_guid))"
         assert comment.guid == "((guidguidguidguidguidguid))"
         assert comment.handle == "alice@alice.diaspora.example.org"
@@ -51,8 +49,7 @@ class TestDiasporaEntityMappersReceive(object):
         entities = message_to_objects(DIASPORA_POST_LIKE)
         assert len(entities) == 1
         like = entities[0]
-        assert isinstance(like, DiasporaLike)
-        assert isinstance(like, Reaction)
+        assert type(like) == Reaction
         assert like.target_guid == "((parent_guidparent_guidparent_guidparent_guid))"
         assert like.guid == "((guidguidguidguidguidguid))"
         assert like.handle == "alice@alice.diaspora.example.org"
@@ -63,11 +60,9 @@ class TestDiasporaEntityMappersReceive(object):
         entities = message_to_objects(DIASPORA_REQUEST)
         assert len(entities) == 2
         sharing = entities[0]
-        assert isinstance(sharing, DiasporaRequest)
-        assert isinstance(sharing, Relationship)
+        assert type(sharing) == Relationship
         following = entities[1]
-        assert not isinstance(following, DiasporaRequest)
-        assert isinstance(following, Relationship)
+        assert type(following) == Relationship
         assert sharing.handle == "bob@example.com"
         assert following.handle == "bob@example.com"
         assert sharing.target_handle == "alice@alice.diaspora.example.org"
@@ -80,6 +75,7 @@ class TestDiasporaEntityMappersReceive(object):
         entities = message_to_objects(DIASPORA_PROFILE)
         assert len(entities) == 1
         profile = entities[0]
+        assert type(profile) == Profile
         assert profile.handle == "bob@example.com"
         assert profile.name == "Bob Bobertson"
         assert profile.image_urls == {
@@ -98,7 +94,7 @@ class TestDiasporaEntityMappersReceive(object):
         entities = message_to_objects(DIASPORA_RETRACTION)
         assert len(entities) == 1
         entity = entities[0]
-        assert isinstance(entity, Retraction)
+        assert type(entity) == Retraction
         assert entity.handle == "bob@example.com"
         assert entity.target_guid == "x" * 16
         assert entity.entity_type == "Post"
